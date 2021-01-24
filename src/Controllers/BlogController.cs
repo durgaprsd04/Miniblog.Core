@@ -62,7 +62,8 @@ namespace Miniblog.Core.Controllers
             if (!this.Request.Form.ContainsKey("website"))
             {
                 post.Comments.Add(comment);
-                await this.blog.SavePost(post).ConfigureAwait(false);
+                //configureAwait removed;
+                await this.blog.SavePost(post);
             }
 
             return this.Redirect($"{post.GetEncodedLink()}#{comment.ID}");
@@ -171,8 +172,8 @@ namespace Miniblog.Core.Controllers
         [OutputCache(Profile = "default")]
         public async Task<IActionResult> Post(string slug)
         {
-            var post = await this.blog.GetPostBySlug(slug).ConfigureAwait(true);
-
+            //var post = await this.blog.GetPostBySlug(slug).ConfigureAwait(true);
+            var post = await this.blog.GetPostBySlug(slug);
             return post is null ? this.NotFound() : (IActionResult)this.View(post);
         }
 
